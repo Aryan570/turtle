@@ -2,7 +2,6 @@ mod ui;
 use eframe::{NativeOptions, egui::ViewportBuilder};
 use ui::Input;
 fn main() -> eframe::Result<()> {
-    println!("Hello, world!");
     let native_options = NativeOptions {
         viewport: ViewportBuilder::default()
             .with_title("turtle")
