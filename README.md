@@ -1,1 +1,6 @@
-I&apos;m trying to make easy to google/calculate/search_files. I don&apos;t how I will I do this just yet. Watch this repository.
+> Only Windows is supported for now.
+
+I&apos;m making this for personal use so I&apos;m not targeting other platforms.
+#####Current functionalities inlclude :
+- Calculator
+- Search/Google
