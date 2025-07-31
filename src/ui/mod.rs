@@ -76,10 +76,13 @@ impl App for Input {
             }
             //ctx.request_repaint();
         }
-        let visuals = egui::Visuals {
-            window_fill: egui::Color32::TRANSPARENT,
-            ..ctx.style().visuals.clone()
-        };
+
+        let mut visuals = ctx.style().visuals.clone();
+        visuals.widgets.active.fg_stroke.color = egui::Color32::TRANSPARENT;
+        visuals.widgets.open.fg_stroke.color = egui::Color32::TRANSPARENT;
+        visuals.widgets.active.bg_stroke.color = egui::Color32::TRANSPARENT;
+        visuals.widgets.open.bg_stroke.color = egui::Color32::TRANSPARENT;
+        visuals.window_fill = egui::Color32::TRANSPARENT;
         ctx.set_visuals(visuals);
         let full = ctx.available_rect();
         let center = full.center();
@@ -88,29 +91,44 @@ impl App for Input {
         Area::new("input_area".into())
             .constrain_to(rect)
             .show(ctx, |ui| {
-                let id = Id::new("spotlight_input");
-                let text_edit = TextEdit::singleline(&mut self.commands)
-                    .id(id)
-                    .desired_width(INPUT_SIZE.x)
-                    .lock_focus(true)
-                    .cursor_at_end(true)
-                    .hint_text("Search or run command…")
-                    .font(egui::TextStyle::Heading);
-                let response = ui.add(text_edit);
-                response.request_focus();
-                if let Some(res) = &self.calc_result {
-                    ui.separator();
-                    //ui.heading("Calculated Result :");
-                    match res {
-                        Ok(x) => {
-                            ui.colored_label(egui::Color32::LIGHT_GREEN, format!("= {}", x));
-                            //self.commands.clear();
-                        }
-                        Err(e) => {
-                            ui.colored_label(egui::Color32::RED, e);
-                        }
-                    }
-                }
+                egui::Frame::window(ui.style())
+                    .corner_radius(12.0)
+                    .fill(egui::Color32::from_rgba_unmultiplied(20, 20, 20, 200))
+                    .stroke(egui::Stroke::new(1.0, egui::Color32::from_rgb(70, 70, 70)))
+                    .show(ui, |ui| {
+                        ui.with_layout(egui::Layout::top_down(egui::Align::LEFT), |ui| {
+                            let id = Id::new("Input");
+                            let text_edit = TextEdit::singleline(&mut self.commands)
+                                .id(id)
+                                .desired_width(INPUT_SIZE.x - 20.0)
+                                .lock_focus(true)
+                                .cursor_at_end(true)
+                                .hint_text(
+                                    egui::RichText::new("Search or run command…")
+                                        .text_style(egui::TextStyle::Heading),
+                                )
+                                .font(egui::TextStyle::Heading)
+                                .frame(false);
+
+                            let response = ui.add(text_edit);
+                            response.request_focus();
+                            if let Some(res) = &self.calc_result {
+                                ui.separator();
+                                match res {
+                                    Ok(x) => {
+                                        ui.add(egui::Label::new(
+                                            egui::RichText::new(format!("= {}", x))
+                                                .color(egui::Color32::LIGHT_GREEN)
+                                                .text_style(egui::TextStyle::Heading),
+                                        ));
+                                    }
+                                    Err(e) => {
+                                        ui.colored_label(egui::Color32::RED, e);
+                                    }
+                                }
+                            }
+                        });
+                    });
             });
     }
 }
