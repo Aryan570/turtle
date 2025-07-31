@@ -118,7 +118,7 @@ impl App for Input {
                                     Ok(x) => {
                                         ui.add(egui::Label::new(
                                             egui::RichText::new(format!("= {}", x))
-                                                .color(egui::Color32::LIGHT_GREEN)
+                                                .color(egui::Color32::DARK_GREEN)
                                                 .text_style(egui::TextStyle::Heading),
                                         ));
                                     }
