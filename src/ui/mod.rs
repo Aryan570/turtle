@@ -3,7 +3,7 @@ use eframe::{
     egui::{self, Area, Id, Rect, TextEdit, Vec2},
 };
 use meval::eval_str;
-use std::{ffi::OsString, mem, os::windows::ffi::OsStrExt};
+use std::{ffi::OsString, os::windows::ffi::OsStrExt};
 use urlencoding::encode;
 use windows::Win32::Foundation::HWND;
 use windows::Win32::UI::Shell::ShellExecuteW;
@@ -51,8 +51,7 @@ impl App for Input {
             ctx.send_viewport_cmd(egui::ViewportCommand::Close);
         }
         if ctx.input(|i| i.key_pressed(egui::Key::Enter)) {
-            let cmds = mem::take(&mut self.commands);
-            let cmds = cmds.trim();
+            let cmds = self.commands.trim();
             match cmds.starts_with("calc:") {
                 true => {
                     let expression = cmds.trim_start_matches("calc:").trim();
