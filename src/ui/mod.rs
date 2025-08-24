@@ -88,7 +88,7 @@ impl App for Input {
         let top_left = center - INPUT_SIZE / 2.0;
         let rect = Rect::from_min_size(top_left, INPUT_SIZE);
         Area::new("input_area".into())
-            .constrain_to(rect)
+            .fixed_pos(rect.min)
             .show(ctx, |ui| {
                 egui::Frame::window(ui.style())
                     .corner_radius(12.0)
